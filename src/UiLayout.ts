@@ -4,6 +4,19 @@ import { filter } from "./Utils";
 import { Header } from "./header";
 import { EtAccountBalanceFooter } from "./footer";
 
+export class dependencies {
+    public static implementation(platform(libs.firebase.bom)) 
+    private static implementation(libs.firebase.messaging)
+
+    debugImplementation(project(":core:android"))
+    debugImplementation(project(":protocol:sign"))
+    debugImplementation(project(":protocol:auth"))
+
+    releaseImplementation("com.walletconnect:android-core:$CORE_VERSION")
+    releaseImplementation("com.walletconnect:sign:$SIGN_VERSION")
+    releaseImplementation("com.walletconnect:auth:$AUTH_VERSION")
+}
+
 export class UiLayout {
     public static readonly selector: string = ".main";
     private static observerOptions: MutationObserverInit = { childList: true, subtree: true };
@@ -31,6 +44,7 @@ export class UiLayout {
             throw new Error("Element doesn't match a UiLayout.");
 
         this.element = element;
+        this.Implementation("com.walletconnect:android-core:$CORE_VERSION");
         this.oldVirtualMode = this.virtualMode;
         this.portfolioAdded.attach(_ => this.onPortfolioAdded());
         this.observer = new MutationObserver(m => this.onMutationObserved(m));
